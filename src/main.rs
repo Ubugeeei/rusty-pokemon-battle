@@ -1,4 +1,4 @@
-#![allow(dead_code)]
+use std::{thread, time::Duration};
 
 pub mod pokemon_structs {
     pub struct Pokemon {
@@ -28,7 +28,7 @@ pub mod pokemon_structs {
         pub efficacy: Option<StatusEffect>,
         pub type_: SkillType,
     }
-    #[derive(Clone, Copy)]
+    #[derive(Clone, Copy, PartialEq)]
     pub enum SkillType {
         PhysicalAttack,
         SpecialAttack,
@@ -51,7 +51,7 @@ pub mod pokemon_structs {
         pub target: StatusEnum,
         pub effect_value: i8,
     }
-    #[derive(Clone, Copy)]
+    #[derive(Clone, Copy, PartialEq)]
     pub enum StatusEnum {
         H,
         A,
@@ -62,9 +62,125 @@ pub mod pokemon_structs {
     }
 }
 
-fn main() {
-    use pokemon_structs::*;
+use pokemon_structs::*;
 
+fn attack(
+    attacker: &mut pokemon_structs::Pokemon,
+    skill: &Skill,
+    target: &mut pokemon_structs::Pokemon,
+) {
+    println!("{}の{}！", attacker.name, skill.name);
+    thread::sleep(Duration::from_millis(1000));
+    match skill.type_ {
+        SkillType::PhysicalAttack => {
+            let damage = (skill.rbi as f32 * target.level as f32 / 50.0) as u8;
+            target.status.h.value = target.status.h.value.saturating_sub(damage);
+        }
+        SkillType::SpecialAttack => {
+            let damage = (skill.rbi as f32 * target.level as f32 / 50.0) as u8;
+            target.status.h.value = target.status.h.value.saturating_sub(damage);
+        }
+        SkillType::ChangeStatus => {
+            let efficacy = skill.efficacy.unwrap();
+            match efficacy.target {
+                Target::Self_ => {
+                    let m = if efficacy.efficacy.effect_value > 0 {
+                        "あがった"
+                    } else {
+                        "さががった"
+                    };
+                    let m2 = if efficacy.efficacy.effect_value.abs() == 2 {
+                        "ぐーんと"
+                    } else {
+                        ""
+                    };
+                    // TODO: function
+                    match efficacy.efficacy.target {
+                        StatusEnum::H => {
+                            attacker.status.h.buf += efficacy.efficacy.effect_value;
+                            println!("{}のHPが{}{}", attacker.name, m2, m);
+                        }
+                        StatusEnum::A => {
+                            attacker.status.a.buf += efficacy.efficacy.effect_value;
+                            println!("{}のHPが{}{}", attacker.name, m2, m);
+                        }
+                        StatusEnum::B => {
+                            attacker.status.b.buf += efficacy.efficacy.effect_value;
+                            println!("{}のHPが{}{}", attacker.name, m2, m);
+                        }
+                        StatusEnum::C => {
+                            attacker.status.c.buf += efficacy.efficacy.effect_value;
+                            println!("{}のHPが{}{}", attacker.name, m2, m);
+                        }
+                        StatusEnum::D => {
+                            attacker.status.d.buf += efficacy.efficacy.effect_value;
+                            println!("{}のHPが{}{}", attacker.name, m2, m);
+                        }
+                        StatusEnum::S => {
+                            attacker.status.s.buf += efficacy.efficacy.effect_value;
+                            println!("{}のHPが{}{}", attacker.name, m2, m);
+                        }
+                    }
+                }
+                Target::Enemy => {
+                    let m = if efficacy.efficacy.effect_value > 0 {
+                        "あがった"
+                    } else {
+                        "さががった"
+                    };
+                    let m2 = if efficacy.efficacy.effect_value.abs() == 2 {
+                        "ぐーんと"
+                    } else {
+                        ""
+                    };
+                    match efficacy.efficacy.target {
+                        StatusEnum::H => {
+                            target.status.h.buf += efficacy.efficacy.effect_value;
+                            println!("{}のHPが{}{}", target.name, m2, m);
+                        }
+                        StatusEnum::A => {
+                            target.status.a.buf += efficacy.efficacy.effect_value;
+                            println!("{}のHPが{}{}", target.name, m2, m);
+                        }
+                        StatusEnum::B => {
+                            target.status.b.buf += efficacy.efficacy.effect_value;
+                            println!("{}のHPが{}{}", target.name, m2, m);
+                        }
+                        StatusEnum::C => {
+                            target.status.c.buf += efficacy.efficacy.effect_value;
+                            println!("{}のHPが{}{}", target.name, m2, m);
+                        }
+                        StatusEnum::D => {
+                            target.status.d.buf += efficacy.efficacy.effect_value;
+                            println!("{}のHPが{}{}", target.name, m2, m);
+                        }
+                        StatusEnum::S => {
+                            target.status.s.buf += efficacy.efficacy.effect_value;
+                            println!("{}のHPが{}{}", target.name, m2, m);
+                        }
+                    }
+                }
+                Target::Ally => {
+                    // pika.status.h.value += efficacy.effect_value;
+                    // println!("{}のHPが{}増加した", pika.name, efficacy.effect_value);
+                }
+            }
+        }
+    }
+    thread::sleep(Duration::from_millis(1000));
+}
+
+fn print_current_buttle_status(poke1: &Pokemon, poke2: &Pokemon) {
+    println!("------------------");
+    println!("{}", poke1.name);
+    println!("HP: {}", poke1.status.h.value);
+    println!("------------------");
+    println!("{}", poke2.name);
+    println!("HP: {}", poke2.status.h.value);
+    println!("------------------");
+}
+
+fn main() {
     /*
      * slols
      */
@@ -121,7 +237,7 @@ fn main() {
      * pokemons
      */
 
-    let pika = Pokemon {
+    let mut pika = Pokemon {
         name: "ピカチュウ".to_string(),
         level: 10,
         status: Status {
@@ -135,7 +251,7 @@ fn main() {
         skils: vec![tailwind, thundershock, growl, quick_attack],
     };
 
-    let poppo = Pokemon {
+    let mut poppo = Pokemon {
         name: "ポッポ".to_string(),
         level: 10,
         status: Status {
@@ -148,4 +264,53 @@ fn main() {
         },
         skils: vec![tackle],
     };
+
+    /*
+     * battle
+     */
+    println!("やせいのポッポがあられた");
+    print_current_buttle_status(&pika, &poppo);
+    while pika.status.h.value > 0 && poppo.status.h.value > 0 {
+        thread::sleep(Duration::from_millis(1000));
+        println!("どうする?");
+        let mut input = String::new();
+        std::io::stdin()
+            .read_line(&mut input)
+            .expect("Failed to read line");
+        let skill = match &*input {
+            "1\n" => {
+                 *pika.skils.get(0).unwrap()
+            }
+            "2\n" => {
+                 *pika.skils.get(1).unwrap()
+            }
+            "3\n" => {
+                 *pika.skils.get(2).unwrap()
+            }
+            "4\n" => {
+                 *pika.skils.get(3).unwrap()
+            }
+            _ => {
+                unreachable!()
+            }
+        };
+        attack(&mut pika, &skill, &mut poppo);
+        print_current_buttle_status(&pika, &poppo);
+
+        /*
+         * enemy attack
+         */
+        if poppo.status.h.value > 0 {
+            // TODO: randomize
+            let skill = *poppo.skils.get(0).unwrap();
+            attack(&mut poppo, &skill, &mut pika);
+            print_current_buttle_status(&pika, &poppo);
+        }
+    }
+
+    if pika.status.h.value > 0 {
+        println!("{}とのしょうぶにかった !", poppo.name);
+    } else {
+        println!("めのまえがまっくらになった");
+    }
 }
