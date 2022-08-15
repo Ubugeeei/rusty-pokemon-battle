@@ -15,6 +15,7 @@ pub struct Status {
   pub c: StatusAtom,
   pub d: StatusAtom,
   pub s: StatusAtom,
+  pub current_hp: u8,
 }
 
 pub struct StatusAtom {
@@ -71,11 +72,11 @@ impl Pokemon {
     match skill.type_ {
       SkillType::PhysicalAttack => {
         let damage = (skill.rbi as f32 * target.level as f32 / 50.0) as u8;
-        target.status.h.value = target.status.h.value.saturating_sub(damage);
+        target.status.current_hp = target.status.current_hp.saturating_sub(damage);
       }
       SkillType::SpecialAttack => {
         let damage = (skill.rbi as f32 * target.level as f32 / 50.0) as u8;
-        target.status.h.value = target.status.h.value.saturating_sub(damage);
+        target.status.current_hp = target.status.current_hp.saturating_sub(damage);
       }
       SkillType::ChangeStatus => {
         let efficacy = skill.efficacy.unwrap();

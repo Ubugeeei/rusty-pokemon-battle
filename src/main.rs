@@ -73,6 +73,7 @@ fn main() {
             c: StatusAtom { value: 18, buf: 0 },
             d: StatusAtom { value: 18, buf: 0 },
             s: StatusAtom { value: 26, buf: 0 },
+            current_hp: 30,
         },
         skills: vec![tailwind, thundershock, growl, quick_attack],
     };
@@ -81,12 +82,13 @@ fn main() {
         name: "ポッポ".to_string(),
         level: 8,
         status: Status {
-            h: StatusAtom { value: 30, buf: 0 },
-            a: StatusAtom { value: 19, buf: 0 },
-            b: StatusAtom { value: 16, buf: 0 },
-            c: StatusAtom { value: 18, buf: 0 },
-            d: StatusAtom { value: 18, buf: 0 },
-            s: StatusAtom { value: 26, buf: 0 },
+            h: StatusAtom { value: 25, buf: 0 },
+            a: StatusAtom { value: 16, buf: 0 },
+            b: StatusAtom { value: 13, buf: 0 },
+            c: StatusAtom { value: 15, buf: 0 },
+            d: StatusAtom { value: 15, buf: 0 },
+            s: StatusAtom { value: 23, buf: 0 },
+            current_hp: 25,
         },
         skills: vec![tackle],
     };
@@ -98,8 +100,9 @@ fn main() {
     print_letter_by_letter("あ!　やせいの");
     print_letter_by_letter(&format!("{}が　とびだしてきた！", poppo.name));
     thread::sleep(Duration::from_millis(500));
-    print_current_buttle_status(&pika, &poppo);
-    while pika.status.h.value > 0 && poppo.status.h.value > 0 {
+
+    clear_and_print_current_buttle_status(&pika, &poppo);
+    while pika.status.current_hp > 0 && poppo.status.current_hp > 0 {
         thread::sleep(Duration::from_millis(1000));
         print_slill_list(&pika);
 
@@ -126,7 +129,7 @@ fn main() {
         /*
          * enemy attack
          */
-        if poppo.status.h.value > 0 {
+        if poppo.status.current_hp > 0 {
             // TODO: randomize
             poppo.attack(0, &mut pika);
             clear_and_print_current_buttle_status(&pika, &poppo);
@@ -134,7 +137,7 @@ fn main() {
         }
     }
 
-    if pika.status.h.value > 0 {
+    if pika.status.current_hp > 0 {
         print_letter_by_letter(&format!("てきの　{}　はたおれた！", poppo.name));
         print_letter_by_letter(&format!("{}との　しょうぶに かった!", poppo.name));
     } else {
