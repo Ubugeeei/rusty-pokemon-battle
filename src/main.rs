@@ -2,6 +2,7 @@ use std::{thread, time::Duration};
 
 mod pokemon;
 mod print;
+mod utils;
 
 use pokemon::*;
 use print::*;

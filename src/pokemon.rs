@@ -1,3 +1,4 @@
+use super::utils::random::*;
 use crate::print::print_letter_by_letter;
 use std::{thread, time::Duration};
 
@@ -71,11 +72,11 @@ impl Pokemon {
     thread::sleep(Duration::from_millis(1000));
     match skill.type_ {
       SkillType::PhysicalAttack => {
-        let damage = (skill.rbi as f32 * target.level as f32 / 50.0) as u8;
+        let damage = self.compute_physical_damage(&skill, self, target);
         target.status.current_hp = target.status.current_hp.saturating_sub(damage);
       }
       SkillType::SpecialAttack => {
-        let damage = (skill.rbi as f32 * target.level as f32 / 50.0) as u8;
+        let damage = self.compute_special_damage(&skill, self, target);
         target.status.current_hp = target.status.current_hp.saturating_sub(damage);
       }
       SkillType::ChangeStatus => {
@@ -164,5 +165,37 @@ impl Pokemon {
       }
     }
     thread::sleep(Duration::from_millis(1000));
+  }
+
+  fn compute_physical_damage(&self, skill: &Skill, attacker: &Pokemon, target: &Pokemon) -> u8 {
+    let mut damage = attacker.level as f32 * 2.0 / 5.0 + 2.0;
+    damage = damage.floor();
+
+    damage =
+      damage * skill.rbi as f32 * attacker.status.a.value as f32 / target.status.b.value as f32;
+    damage = damage.floor();
+    
+    damage = damage / 50.0 + 2.0;
+    damage = damage.floor();
+
+    // let rand = (1 / xor_shift_rand(42)) as f32;
+
+    damage as u8
+  }
+
+  fn compute_special_damage(&self, skill: &Skill, attacker: &Pokemon, target: &Pokemon) -> u8 {
+    let mut damage = attacker.level as f32 * 2.0 / 5.0 + 2.0;
+    damage = damage.floor();
+
+    damage =
+      damage * skill.rbi as f32 * attacker.status.c.value as f32 / target.status.d.value as f32;
+    damage = damage.floor();
+    
+    damage = damage / 50.0 + 2.0;
+    damage = damage.floor();
+
+    // let rand = (1 / xor_shift_rand(42)) as f32;
+
+    damage as u8
   }
 }
