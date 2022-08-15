@@ -79,7 +79,7 @@ fn main() {
 
     let mut poppo = Pokemon {
         name: "ポッポ".to_string(),
-        level: 10,
+        level: 8,
         status: Status {
             h: StatusAtom { value: 30, buf: 0 },
             a: StatusAtom { value: 19, buf: 0 },
@@ -101,7 +101,6 @@ fn main() {
     print_current_buttle_status(&pika, &poppo);
     while pika.status.h.value > 0 && poppo.status.h.value > 0 {
         thread::sleep(Duration::from_millis(1000));
-        print_letter_by_letter("どうする？");
         print_slill_list(&pika);
 
         // select skill

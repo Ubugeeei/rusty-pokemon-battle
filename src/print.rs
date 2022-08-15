@@ -6,25 +6,25 @@ use crate::pokemon::Pokemon;
 
 pub fn print_current_buttle_status(poke1: &Pokemon, poke2: &Pokemon) {
   println!("------------------");
-  println!("{}", poke1.name);
+  println!("{}: L{}", poke1.name, poke1.level);
   println!("HP: {}", poke1.status.h.value);
   println!("------------------");
-  println!("{}", poke2.name);
+  println!("{}: L{}", poke2.name, poke2.level);
   println!("HP: {}", poke2.status.h.value);
   println!("------------------");
 }
 
 pub fn print_slill_list(poke: &Pokemon) {
   for (i, skill) in poke.skills.iter().enumerate() {
-      println!("{}.{}", i + 1, skill.name);
+    println!("{}.{}", i + 1, skill.name);
   }
 }
 
 pub fn print_letter_by_letter(text: &str) {
   for c in text.chars() {
-      print!("{}", c);
-      let _ = stdout().flush();
-      thread::sleep(Duration::from_millis(40));
+    print!("{}", c);
+    let _ = stdout().flush();
+    thread::sleep(Duration::from_millis(40));
   }
   println!("");
 }
