@@ -43,6 +43,7 @@ pub struct StatusEffect {
   pub efficacy: Efficacy,
   pub target: Target,
 }
+#[allow(dead_code)]
 #[derive(Clone, Copy)]
 pub enum Target {
   Self_,
@@ -54,6 +55,7 @@ pub struct Efficacy {
   pub target: StatusEnum,
   pub effect_value: i8,
 }
+#[allow(dead_code)]
 #[derive(Clone, Copy, PartialEq)]
 pub enum StatusEnum {
   H,
