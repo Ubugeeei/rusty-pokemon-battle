@@ -1,4 +1,3 @@
-use super::utils::random::*;
 use crate::print::print_letter_by_letter;
 use std::{thread, time::Duration};
 
@@ -171,10 +170,11 @@ impl Pokemon {
     let mut damage = attacker.level as f32 * 2.0 / 5.0 + 2.0;
     damage = damage.floor();
 
-    damage =
-      damage * skill.rbi as f32 * attacker.status.a.value as f32 / target.status.b.value as f32;
+    let a = self.compute_status_buf(&attacker.status.a) as f32;
+    let b = self.compute_status_buf(&target.status.b) as f32;
+
+    damage = damage * skill.rbi as f32 * a / b;
     damage = damage.floor();
-    
     damage = damage / 50.0 + 2.0;
     damage = damage.floor();
 
@@ -187,15 +187,45 @@ impl Pokemon {
     let mut damage = attacker.level as f32 * 2.0 / 5.0 + 2.0;
     damage = damage.floor();
 
-    damage =
-      damage * skill.rbi as f32 * attacker.status.c.value as f32 / target.status.d.value as f32;
+    let c = self.compute_status_buf(&attacker.status.c) as f32;
+    let d = self.compute_status_buf(&target.status.d) as f32;
+
+    damage = damage * skill.rbi as f32 * c / d;
     damage = damage.floor();
-    
     damage = damage / 50.0 + 2.0;
     damage = damage.floor();
 
     // let rand = (1 / xor_shift_rand(42)) as f32;
 
     damage as u8
+  }
+
+  fn compute_status_buf(&self, status: &StatusAtom) -> u8 {
+    if status.buf < -6 {
+      return status.value * 2 / 8;
+    }
+
+    if status.buf > 6 {
+      return status.value * 8 / 2;
+    }
+
+    let rate = match status.buf {
+      -6 => 2.0 / 8.0,
+      -5 => 2.0 / 7.0,
+      -4 => 2.0 / 6.0,
+      -3 => 2.0 / 5.0,
+      -2 => 2.0 / 4.0,
+      -1 => 2.0 / 3.0,
+      0 => 2.0 / 2.0,
+      1 => 3.0 / 2.0,
+      2 => 4.0 / 2.0,
+      3 => 5.0 / 2.0,
+      4 => 6.0 / 2.0,
+      5 => 7.0 / 2.0,
+      6 => 8.0 / 2.0,
+      _ => unreachable!(),
+    };
+
+    (status.value as f64 * rate) as u8
   }
 }
