@@ -1,5 +1,5 @@
 [package]
-name = "pokemon"
+name = "pokemon_battle"
 version = "0.1.0"
 edition = "2021"
 
