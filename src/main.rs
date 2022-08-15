@@ -89,7 +89,7 @@ fn attack(
                     let m = if efficacy.efficacy.effect_value > 0 {
                         "あがった"
                     } else {
-                        "さががった"
+                        "さがった"
                     };
                     let m2 = if efficacy.efficacy.effect_value.abs() == 2 {
                         "ぐーんと"
@@ -100,27 +100,26 @@ fn attack(
                     match efficacy.efficacy.target {
                         StatusEnum::H => {
                             attacker.status.h.buf += efficacy.efficacy.effect_value;
-                            print_letter_by_letter(&format!("{}のHPが{}{}", attacker.name, m2, m));
                         }
                         StatusEnum::A => {
                             attacker.status.a.buf += efficacy.efficacy.effect_value;
-                            print_letter_by_letter(&format!("{}のHPが{}{}", attacker.name, m2, m));
+                            print_letter_by_letter(&format!("{}のこうげきが{}{}", attacker.name, m2, m));
                         }
                         StatusEnum::B => {
                             attacker.status.b.buf += efficacy.efficacy.effect_value;
-                            print_letter_by_letter(&format!("{}のHPが{}{}", attacker.name, m2, m));
+                            print_letter_by_letter(&format!("{}のぼうぎょが{}{}", attacker.name, m2, m));
                         }
                         StatusEnum::C => {
                             attacker.status.c.buf += efficacy.efficacy.effect_value;
-                            print_letter_by_letter(&format!("{}のHPが{}{}", attacker.name, m2, m));
+                            print_letter_by_letter(&format!("{}のとくこうが{}{}", attacker.name, m2, m));
                         }
                         StatusEnum::D => {
                             attacker.status.d.buf += efficacy.efficacy.effect_value;
-                            print_letter_by_letter(&format!("{}のHPが{}{}", attacker.name, m2, m));
+                            print_letter_by_letter(&format!("{}のとくぼうが{}{}", attacker.name, m2, m));
                         }
                         StatusEnum::S => {
                             attacker.status.s.buf += efficacy.efficacy.effect_value;
-                            print_letter_by_letter(&format!("{}のHPが{}{}", attacker.name, m2, m));
+                            print_letter_by_letter(&format!("{}のすばやさが{}{}", attacker.name, m2, m));
                         }
                     }
                 }
@@ -128,7 +127,7 @@ fn attack(
                     let m = if efficacy.efficacy.effect_value > 0 {
                         "あがった"
                     } else {
-                        "さががった"
+                        "さがった"
                     };
                     let m2 = if efficacy.efficacy.effect_value.abs() == 2 {
                         "ぐーんと"
@@ -138,27 +137,26 @@ fn attack(
                     match efficacy.efficacy.target {
                         StatusEnum::H => {
                             target.status.h.buf += efficacy.efficacy.effect_value;
-                            print_letter_by_letter(&format!("{}のHPが{}{}", target.name, m2, m));
                         }
                         StatusEnum::A => {
                             target.status.a.buf += efficacy.efficacy.effect_value;
-                            print_letter_by_letter(&format!("{}のHPが{}{}", target.name, m2, m));
+                            print_letter_by_letter(&format!("{}のこうげきが{}{}", target.name, m2, m));
                         }
                         StatusEnum::B => {
                             target.status.b.buf += efficacy.efficacy.effect_value;
-                            print_letter_by_letter(&format!("{}のHPが{}{}", target.name, m2, m));
+                            print_letter_by_letter(&format!("{}のぼうぎょが{}{}", target.name, m2, m));
                         }
                         StatusEnum::C => {
                             target.status.c.buf += efficacy.efficacy.effect_value;
-                            print_letter_by_letter(&format!("{}のHPが{}{}", target.name, m2, m));
+                            print_letter_by_letter(&format!("{}のとくこうが{}{}", target.name, m2, m));
                         }
                         StatusEnum::D => {
                             target.status.d.buf += efficacy.efficacy.effect_value;
-                            print_letter_by_letter(&format!("{}のHPが{}{}", target.name, m2, m));
+                            print_letter_by_letter(&format!("{}のとくぼうが{}{}", target.name, m2, m));
                         }
                         StatusEnum::S => {
                             target.status.s.buf += efficacy.efficacy.effect_value;
-                            print_letter_by_letter(&format!("{}のHPが{}{}", target.name, m2, m));
+                            print_letter_by_letter(&format!("{}のすばやさが{}{}", target.name, m2, m));
                         }
                     }
                 }
@@ -216,7 +214,7 @@ fn main() {
                 target: StatusEnum::B,
                 effect_value: -1,
             },
-            target: Target::Ally,
+            target: Target::Enemy,
         }),
         type_: SkillType::ChangeStatus,
     };
@@ -315,6 +313,7 @@ fn main() {
         // attack
         attack(&mut pika, &skill, &mut poppo);
         print_current_buttle_status(&pika, &poppo);
+        println!("");
 
         /*
          * enemy attack
@@ -324,6 +323,7 @@ fn main() {
             let skill = *poppo.skills.get(0).unwrap();
             attack(&mut poppo, &skill, &mut pika);
             print_current_buttle_status(&pika, &poppo);
+            println!("");
         }
 
         print!("\n\n\n\n");
