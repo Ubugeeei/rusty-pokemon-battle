@@ -27,7 +27,6 @@ pub fn print_letter_by_letter(text: &str) {
       thread::sleep(Duration::from_millis(40));
   }
   println!("");
-  thread::sleep(Duration::from_millis(500));
 }
 
 pub fn clear_screen() {

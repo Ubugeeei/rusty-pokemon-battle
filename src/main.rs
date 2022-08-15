@@ -95,7 +95,9 @@ fn main() {
      * battle
      */
     clear_screen();
-    print_letter_by_letter("やせいのポッポがあられた！");
+    print_letter_by_letter("あ!　やせいの");
+    print_letter_by_letter(&format!("{}が　とびだしてきた！", poppo.name));
+    thread::sleep(Duration::from_millis(500));
     print_current_buttle_status(&pika, &poppo);
     while pika.status.h.value > 0 && poppo.status.h.value > 0 {
         thread::sleep(Duration::from_millis(1000));
@@ -134,8 +136,9 @@ fn main() {
     }
 
     if pika.status.h.value > 0 {
-        print_letter_by_letter(&format!("{}とのしょうぶにかった !", poppo.name));
+        print_letter_by_letter(&format!("てきの　{}　はたおれた！", poppo.name));
+        print_letter_by_letter(&format!("{}との　しょうぶに かった!", poppo.name));
     } else {
-        print_letter_by_letter(&format!("めのまえがまっくらになった"));
+        print_letter_by_letter(&format!("めのまえが　まっくらに　なった"));
     }
 }
