@@ -7,7 +7,7 @@ pub mod pokemon_structs {
         pub name: String,
         pub level: u8,
         pub status: Status,
-        pub skils: Vec<Skill>,
+        pub skills: Vec<Skill>,
     }
     pub struct Status {
         pub h: StatusAtom,
@@ -172,6 +172,10 @@ fn attack(
     thread::sleep(Duration::from_millis(1000));
 }
 
+/*
+ * print
+ */
+
 fn print_current_buttle_status(poke1: &Pokemon, poke2: &Pokemon) {
     println!("------------------");
     println!("{}", poke1.name);
@@ -180,6 +184,12 @@ fn print_current_buttle_status(poke1: &Pokemon, poke2: &Pokemon) {
     println!("{}", poke2.name);
     println!("HP: {}", poke2.status.h.value);
     println!("------------------");
+}
+
+fn print_slill_list(poke: &Pokemon) {
+    for (i, skill) in poke.skills.iter().enumerate() {
+        println!("{}.{}", i + 1, skill.name);
+    }
 }
 
 fn print_letter_by_letter(text: &str) {
@@ -260,7 +270,7 @@ fn main() {
             d: StatusAtom { value: 18, buf: 0 },
             s: StatusAtom { value: 26, buf: 0 },
         },
-        skils: vec![tailwind, thundershock, growl, quick_attack],
+        skills: vec![tailwind, thundershock, growl, quick_attack],
     };
 
     let mut poppo = Pokemon {
@@ -274,30 +284,35 @@ fn main() {
             d: StatusAtom { value: 18, buf: 0 },
             s: StatusAtom { value: 26, buf: 0 },
         },
-        skils: vec![tackle],
+        skills: vec![tackle],
     };
 
     /*
      * battle
      */
-    print_letter_by_letter("やせいのポッポがあられた");
+    print_letter_by_letter("やせいのポッポがあられた！");
     print_current_buttle_status(&pika, &poppo);
     while pika.status.h.value > 0 && poppo.status.h.value > 0 {
         thread::sleep(Duration::from_millis(1000));
-        print_letter_by_letter("どうする?");
+        print_letter_by_letter("どうする？");
+        print_slill_list(&pika);
+
+        // select skill
         let mut input = String::new();
         std::io::stdin()
             .read_line(&mut input)
             .expect("Failed to read line");
         let skill = match &*input {
-            "1\n" => *pika.skils.get(0).unwrap(),
-            "2\n" => *pika.skils.get(1).unwrap(),
-            "3\n" => *pika.skils.get(2).unwrap(),
-            "4\n" => *pika.skils.get(3).unwrap(),
+            "1\n" => *pika.skills.get(0).unwrap(),
+            "2\n" => *pika.skills.get(1).unwrap(),
+            "3\n" => *pika.skills.get(2).unwrap(),
+            "4\n" => *pika.skills.get(3).unwrap(),
             _ => {
                 unreachable!()
             }
         };
+
+        // attack
         attack(&mut pika, &skill, &mut poppo);
         print_current_buttle_status(&pika, &poppo);
 
@@ -306,10 +321,12 @@ fn main() {
          */
         if poppo.status.h.value > 0 {
             // TODO: randomize
-            let skill = *poppo.skils.get(0).unwrap();
+            let skill = *poppo.skills.get(0).unwrap();
             attack(&mut poppo, &skill, &mut pika);
             print_current_buttle_status(&pika, &poppo);
         }
+
+        print!("\n\n\n\n");
     }
 
     if pika.status.h.value > 0 {
