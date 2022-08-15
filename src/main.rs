@@ -94,6 +94,7 @@ fn main() {
     /*
      * battle
      */
+    clear_screen();
     print_letter_by_letter("やせいのポッポがあられた！");
     print_current_buttle_status(&pika, &poppo);
     while pika.status.h.value > 0 && poppo.status.h.value > 0 {
@@ -117,9 +118,9 @@ fn main() {
         };
 
         // attack
+        clear_and_print_current_buttle_status(&pika, &poppo);
         pika.attack(skill_idx, &mut poppo);
-        print_current_buttle_status(&pika, &poppo);
-        println!("");
+        clear_and_print_current_buttle_status(&pika, &poppo);
 
         /*
          * enemy attack
@@ -127,11 +128,9 @@ fn main() {
         if poppo.status.h.value > 0 {
             // TODO: randomize
             poppo.attack(0, &mut pika);
-            print_current_buttle_status(&pika, &poppo);
+            clear_and_print_current_buttle_status(&pika, &poppo);
             println!("");
         }
-
-        print!("\n\n\n\n");
     }
 
     if pika.status.h.value > 0 {

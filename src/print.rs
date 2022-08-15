@@ -29,3 +29,12 @@ pub fn print_letter_by_letter(text: &str) {
   println!("");
   thread::sleep(Duration::from_millis(500));
 }
+
+pub fn clear_screen() {
+  print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
+}
+
+pub fn clear_and_print_current_buttle_status(poke1: &Pokemon, poke2: &Pokemon) {
+  clear_screen();
+  print_current_buttle_status(poke1, poke2);
+}
