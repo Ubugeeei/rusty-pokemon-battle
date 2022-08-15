@@ -140,6 +140,8 @@ fn main() {
 
     if pika.status.current_hp > 0 {
         print_letter_by_letter(&format!("てきの　{}　はたおれた！", poppo.name));
+        thread::sleep(Duration::from_millis(2000));
+        clear_and_print_current_buttle_status(&pika, &poppo);
         print_letter_by_letter(&format!("{}との　しょうぶに かった!", poppo.name));
     } else {
         print_letter_by_letter(&format!("めのまえが　まっくらに　なった"));
