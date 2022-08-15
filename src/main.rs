@@ -1,3 +1,5 @@
+use std::io::stdout;
+use std::io::Write;
 use std::{thread, time::Duration};
 
 pub mod pokemon_structs {
@@ -69,7 +71,7 @@ fn attack(
     skill: &Skill,
     target: &mut pokemon_structs::Pokemon,
 ) {
-    println!("{}の{}！", attacker.name, skill.name);
+    print_letter_by_letter(&format!("{}の{}！", attacker.name, skill.name));
     thread::sleep(Duration::from_millis(1000));
     match skill.type_ {
         SkillType::PhysicalAttack => {
@@ -98,27 +100,27 @@ fn attack(
                     match efficacy.efficacy.target {
                         StatusEnum::H => {
                             attacker.status.h.buf += efficacy.efficacy.effect_value;
-                            println!("{}のHPが{}{}", attacker.name, m2, m);
+                            print_letter_by_letter(&format!("{}のHPが{}{}", attacker.name, m2, m));
                         }
                         StatusEnum::A => {
                             attacker.status.a.buf += efficacy.efficacy.effect_value;
-                            println!("{}のHPが{}{}", attacker.name, m2, m);
+                            print_letter_by_letter(&format!("{}のHPが{}{}", attacker.name, m2, m));
                         }
                         StatusEnum::B => {
                             attacker.status.b.buf += efficacy.efficacy.effect_value;
-                            println!("{}のHPが{}{}", attacker.name, m2, m);
+                            print_letter_by_letter(&format!("{}のHPが{}{}", attacker.name, m2, m));
                         }
                         StatusEnum::C => {
                             attacker.status.c.buf += efficacy.efficacy.effect_value;
-                            println!("{}のHPが{}{}", attacker.name, m2, m);
+                            print_letter_by_letter(&format!("{}のHPが{}{}", attacker.name, m2, m));
                         }
                         StatusEnum::D => {
                             attacker.status.d.buf += efficacy.efficacy.effect_value;
-                            println!("{}のHPが{}{}", attacker.name, m2, m);
+                            print_letter_by_letter(&format!("{}のHPが{}{}", attacker.name, m2, m));
                         }
                         StatusEnum::S => {
                             attacker.status.s.buf += efficacy.efficacy.effect_value;
-                            println!("{}のHPが{}{}", attacker.name, m2, m);
+                            print_letter_by_letter(&format!("{}のHPが{}{}", attacker.name, m2, m));
                         }
                     }
                 }
@@ -136,27 +138,27 @@ fn attack(
                     match efficacy.efficacy.target {
                         StatusEnum::H => {
                             target.status.h.buf += efficacy.efficacy.effect_value;
-                            println!("{}のHPが{}{}", target.name, m2, m);
+                            print_letter_by_letter(&format!("{}のHPが{}{}", target.name, m2, m));
                         }
                         StatusEnum::A => {
                             target.status.a.buf += efficacy.efficacy.effect_value;
-                            println!("{}のHPが{}{}", target.name, m2, m);
+                            print_letter_by_letter(&format!("{}のHPが{}{}", target.name, m2, m));
                         }
                         StatusEnum::B => {
                             target.status.b.buf += efficacy.efficacy.effect_value;
-                            println!("{}のHPが{}{}", target.name, m2, m);
+                            print_letter_by_letter(&format!("{}のHPが{}{}", target.name, m2, m));
                         }
                         StatusEnum::C => {
                             target.status.c.buf += efficacy.efficacy.effect_value;
-                            println!("{}のHPが{}{}", target.name, m2, m);
+                            print_letter_by_letter(&format!("{}のHPが{}{}", target.name, m2, m));
                         }
                         StatusEnum::D => {
                             target.status.d.buf += efficacy.efficacy.effect_value;
-                            println!("{}のHPが{}{}", target.name, m2, m);
+                            print_letter_by_letter(&format!("{}のHPが{}{}", target.name, m2, m));
                         }
                         StatusEnum::S => {
                             target.status.s.buf += efficacy.efficacy.effect_value;
-                            println!("{}のHPが{}{}", target.name, m2, m);
+                            print_letter_by_letter(&format!("{}のHPが{}{}", target.name, m2, m));
                         }
                     }
                 }
@@ -178,6 +180,16 @@ fn print_current_buttle_status(poke1: &Pokemon, poke2: &Pokemon) {
     println!("{}", poke2.name);
     println!("HP: {}", poke2.status.h.value);
     println!("------------------");
+}
+
+fn print_letter_by_letter(text: &str) {
+    for c in text.chars() {
+        print!("{}", c);
+        let _ = stdout().flush();
+        thread::sleep(Duration::from_millis(40));
+    }
+    println!("");
+    thread::sleep(Duration::from_millis(500));
 }
 
 fn main() {
@@ -268,28 +280,20 @@ fn main() {
     /*
      * battle
      */
-    println!("やせいのポッポがあられた");
+    print_letter_by_letter("やせいのポッポがあられた");
     print_current_buttle_status(&pika, &poppo);
     while pika.status.h.value > 0 && poppo.status.h.value > 0 {
         thread::sleep(Duration::from_millis(1000));
-        println!("どうする?");
+        print_letter_by_letter("どうする?");
         let mut input = String::new();
         std::io::stdin()
             .read_line(&mut input)
             .expect("Failed to read line");
         let skill = match &*input {
-            "1\n" => {
-                 *pika.skils.get(0).unwrap()
-            }
-            "2\n" => {
-                 *pika.skils.get(1).unwrap()
-            }
-            "3\n" => {
-                 *pika.skils.get(2).unwrap()
-            }
-            "4\n" => {
-                 *pika.skils.get(3).unwrap()
-            }
+            "1\n" => *pika.skils.get(0).unwrap(),
+            "2\n" => *pika.skils.get(1).unwrap(),
+            "3\n" => *pika.skils.get(2).unwrap(),
+            "4\n" => *pika.skils.get(3).unwrap(),
             _ => {
                 unreachable!()
             }
@@ -309,8 +313,8 @@ fn main() {
     }
 
     if pika.status.h.value > 0 {
-        println!("{}とのしょうぶにかった !", poppo.name);
+        print_letter_by_letter(&format!("{}とのしょうぶにかった !", poppo.name));
     } else {
-        println!("めのまえがまっくらになった");
+        print_letter_by_letter(&format!("めのまえがまっくらになった"));
     }
 }
