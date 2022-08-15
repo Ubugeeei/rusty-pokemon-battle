@@ -5,7 +5,7 @@ use std::{thread, time::Duration};
 use crate::pokemon::Pokemon;
 
 #[rustfmt::skip]
-pub fn print_current_buttle_status(mypoke: &Pokemon, enepoke: &Pokemon) {
+pub fn print_current_battle_status(mypoke: &Pokemon, enepoke: &Pokemon) {
   println!("　{}:L{}", enepoke.name, enepoke.level);
   println!("|　HP: {}", get_hp_bar(enepoke.status.current_hp, enepoke.status.h.value, 15));
   println!("------------------------▶");
@@ -55,7 +55,7 @@ pub fn clear_screen() {
   print!("{esc}[2J{esc}[1;1H", esc = 27 as char);
 }
 
-pub fn clear_and_print_current_buttle_status(poke1: &Pokemon, poke2: &Pokemon) {
+pub fn clear_and_print_current_battle_status(poke1: &Pokemon, poke2: &Pokemon) {
   clear_screen();
-  print_current_buttle_status(poke1, poke2);
+  print_current_battle_status(poke1, poke2);
 }

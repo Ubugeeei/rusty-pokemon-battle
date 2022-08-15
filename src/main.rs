@@ -102,7 +102,7 @@ fn main() {
     print_letter_by_letter(&format!("{}が　とびだしてきた！", poppo.name));
     thread::sleep(Duration::from_millis(500));
 
-    clear_and_print_current_buttle_status(&pika, &poppo);
+    clear_and_print_current_battle_status(&pika, &poppo);
     while pika.status.current_hp > 0 && poppo.status.current_hp > 0 {
         thread::sleep(Duration::from_millis(1000));
         print_slill_list(&pika);
@@ -123,9 +123,9 @@ fn main() {
         };
 
         // attack
-        clear_and_print_current_buttle_status(&pika, &poppo);
+        clear_and_print_current_battle_status(&pika, &poppo);
         pika.attack(skill_idx, &mut poppo);
-        clear_and_print_current_buttle_status(&pika, &poppo);
+        clear_and_print_current_battle_status(&pika, &poppo);
 
         /*
          * enemy attack
@@ -133,7 +133,7 @@ fn main() {
         if poppo.status.current_hp > 0 {
             // TODO: randomize
             poppo.attack(0, &mut pika);
-            clear_and_print_current_buttle_status(&pika, &poppo);
+            clear_and_print_current_battle_status(&pika, &poppo);
             println!("");
         }
     }
@@ -141,7 +141,7 @@ fn main() {
     if pika.status.current_hp > 0 {
         print_letter_by_letter(&format!("てきの　{}　はたおれた！", poppo.name));
         thread::sleep(Duration::from_millis(2000));
-        clear_and_print_current_buttle_status(&pika, &poppo);
+        clear_and_print_current_battle_status(&pika, &poppo);
         print_letter_by_letter(&format!("{}との　しょうぶに かった!", poppo.name));
     } else {
         print_letter_by_letter(&format!("めのまえが　まっくらに　なった"));
